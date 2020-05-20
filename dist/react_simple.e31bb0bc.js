@@ -117,7 +117,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"index.js":[function(require,module,exports) {
+})({"react/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 var React = {
   createElement: createElement
 };
@@ -129,16 +135,131 @@ function createElement(tag, attrs) {
 
   return {
     tag: tag,
+    //外层的标签
     attrs: attrs,
-    childrens: childrens
+    //属性 是一个对象
+    childrens: childrens //是一个数组
+
   };
 }
 
-var ele = React.createElement("div", {
+var _default = React;
+exports.default = _default;
+},{}],"react-dom/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var ReactDOM = {
+  render: render
+  /**
+   * createElement(tag, attrs, child1,child2,......)
+   */
+
+  /** 通过babel转义的ele
+   * var ele = React.createElement(
+    "div",
+    {
+      className: "active",
+      title: "123"
+    },
+    "hello, ",
+    React.createElement("span", null, "react")
+  );
+   */
+
+};
+
+function render(vnode, container) {
+  console.log(vnode);
+  if (vnode === undefined) return; //如果vnode是字符串
+
+  if (typeof vnode === 'string') {
+    //创建文本节点
+    var textNode = document.createTextNode(vnode);
+    return container.appendChild(textNode);
+  } //否则就是个虚拟DOM对象
+
+
+  console.log("----v node is ---", vnode.tag, vnode.attrs);
+  var tag = vnode.tag,
+      attrs = vnode.attrs; //解构vnode
+  //创建节点对象
+
+  var dom = document.createElement(tag);
+
+  if (attrs) {
+    //有属性
+    Object.keys(attrs).forEach(function (key) {
+      var value = attrs[key];
+      setAttribute(dom, key, value);
+    });
+  } //递归--渲染子节点
+
+
+  vnode.childrens.forEach(function (child) {
+    return render(child, dom);
+  });
+  return container.appendChild(dom);
+}
+
+function setAttribute(dom, key, value) {
+  //将className转为class
+  if (key === 'className') {
+    key = 'class';
+  } //如果是事件，onClick，onBlur等
+
+
+  if (/on\w+/.test(key)) {
+    //转小写
+    key.toLowerCase();
+    dom[key] = value || '';
+  } else if (key === 'style') {
+    if (!value || typeof value === 'string') {
+      dom.style.cssText = value || '';
+    } else if (value && _typeof(value) === 'object') {
+      //for example: {width:20}
+      for (var k in value) {
+        if (typeof value[k] === 'number') {
+          dom.style[k] = value[k] + 'px';
+        } else {
+          dom.style[k] = value[k];
+        }
+      }
+    }
+  } else if (key in dom) {
+    dom[key] = value || '';
+  }
+
+  if (value) {
+    dom.setAttribute(key, value);
+  } else {
+    dom.removeAttribute(key);
+  }
+}
+
+var _default = ReactDOM;
+exports.default = _default;
+},{}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _react = _interopRequireDefault(require("./react"));
+
+var _reactDom = _interopRequireDefault(require("./react-dom"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ele = _react.default.createElement("div", {
   className: "active",
   title: "123"
-}, "hello, ", React.createElement("span", null, "react"));
-console.log(ele);
+}, "hello, ", _react.default.createElement("span", null, "react"));
+
+_reactDom.default.render(ele, document.getElementById("box"));
 /**
  * createElement(tag, attrs, child1,child2,......)
  */
@@ -154,7 +275,7 @@ console.log(ele);
   React.createElement("span", null, "react")
 );
  */
-},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./react":"react/index.js","./react-dom":"react-dom/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -182,7 +303,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53128" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54858" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

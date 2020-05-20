@@ -1,22 +1,13 @@
-const React = {
-    createElement
-}
+import  React  from "./react";
+import ReactDOM from "./react-dom"
 
-function createElement(tag, attrs, ...childrens) {
-    return{
-        tag,
-        attrs,
-        childrens
-    }
-}
 const ele = (
     <div className="active" title="123">
         hello, <span>react</span>
     </div>
 )
 
-console.log(ele)
-
+ReactDOM.render(ele, document.getElementById("box"))
 /**
  * createElement(tag, attrs, child1,child2,......)
  */
