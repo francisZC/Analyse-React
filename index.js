@@ -7,7 +7,15 @@ const ele = (
     </div>
 )
 
-ReactDOM.render(ele, document.getElementById("box"))
+function Home(){
+  return <div className="active" title="123">
+            hello, <span>react</span>
+        </div>
+}
+const title = 'active'
+console.log(<Home name={title}/>)
+
+ReactDOM.render(<Home name={title}/>, document.getElementById("box"))
 /**
  * createElement(tag, attrs, child1,child2,......)
  */

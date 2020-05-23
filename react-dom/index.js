@@ -19,13 +19,16 @@ const ReactDOM = {
  */
 
 function render(vnode, container) {
-    console.log(vnode)
+    return container.appendChild(_render(vnode))
+
+}
+
+function _render(vnode) {
     if(vnode === undefined) return;
     //如果vnode是字符串
     if(typeof vnode === 'string'){
         //创建文本节点
-        const textNode = document.createTextNode(vnode);
-        return container.appendChild(textNode);
+        return document.createTextNode(vnode);
     }
 
     //否则就是个虚拟DOM对象
@@ -43,8 +46,7 @@ function render(vnode, container) {
 
     //递归--渲染子节点
     vnode.childrens.forEach(child=>render(child, dom))
-    return container.appendChild(dom);
-
+    return dom;
 }
 
 function setAttribute(dom, key, value) {

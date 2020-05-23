@@ -176,13 +176,15 @@ var ReactDOM = {
 };
 
 function render(vnode, container) {
-  console.log(vnode);
+  return container.appendChild(_render(vnode));
+}
+
+function _render(vnode) {
   if (vnode === undefined) return; //如果vnode是字符串
 
   if (typeof vnode === 'string') {
     //创建文本节点
-    var textNode = document.createTextNode(vnode);
-    return container.appendChild(textNode);
+    return document.createTextNode(vnode);
   } //否则就是个虚拟DOM对象
 
 
@@ -205,7 +207,7 @@ function render(vnode, container) {
   vnode.childrens.forEach(function (child) {
     return render(child, dom);
   });
-  return container.appendChild(dom);
+  return dom;
 }
 
 function setAttribute(dom, key, value) {
@@ -259,7 +261,21 @@ var ele = _react.default.createElement("div", {
   title: "123"
 }, "hello, ", _react.default.createElement("span", null, "react"));
 
-_reactDom.default.render(ele, document.getElementById("box"));
+function Home() {
+  return _react.default.createElement("div", {
+    className: "active",
+    title: "123"
+  }, "hello, ", _react.default.createElement("span", null, "react"));
+}
+
+var title = 'active';
+console.log(_react.default.createElement(Home, {
+  name: title
+}));
+
+_reactDom.default.render(_react.default.createElement(Home, {
+  name: title
+}), document.getElementById("box"));
 /**
  * createElement(tag, attrs, child1,child2,......)
  */
@@ -303,7 +319,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54858" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58217" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start":"parcel index.html"
+    "start":"parcel index.html --open"
   },
   "dependencies": {
     "babel-core": "^6.26.3",
