@@ -1,3 +1,5 @@
+import Component from '../react/component';
+
 const ReactDOM = {
     render
 }
@@ -23,12 +25,41 @@ function render(vnode, container) {
 
 }
 
+function createComponent(comp, props) {
+    let inst;
+    //如果组件有原型并且原型中有render方法，则为类定义的组件
+    if(comp.prototype && comp.prototype.render){
+        //如果是类型一的组件，则创建实例 返回
+        inst= new comp(props)
+    }else{
+        //如果是函数组件，则将函数组件扩展成类组件，方便统一管理
+        inst = new Component(props)
+        inst.constructor = comp;
+        //定义render函数
+        inst.render = function () {
+            return this.constructor(props)
+        }
+
+    }
+    return inst;
+}
+
 function _render(vnode) {
     if(vnode === undefined) return;
     //如果vnode是字符串
     if(typeof vnode === 'string'){
         //创建文本节点
         return document.createTextNode(vnode);
+    }
+
+    if(typeof vnode.tag === 'function'){
+        //1. 创建组件
+        const comp = createComponent(vnode.tag, vnode.attrs);
+        console.log('---组件',comp)
+        //2. 设置组件的属性
+        setComponentProps(comp, vnode.attrs)
+        //3. 组件渲染的节点对象返回
+        // return comp.base;
     }
 
     //否则就是个虚拟DOM对象
